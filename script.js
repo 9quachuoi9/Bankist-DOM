@@ -1,0 +1,185 @@
+'use strict';
+
+///////////////////////////////////////
+// Modal window
+
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+const btnCloseModal = document.querySelector('.btn--close-modal');
+const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
+
+const openModal = function (e) {
+    e.preventDefault();
+    modal.classList.remove('hidden');
+    overlay.classList.remove('hidden');
+};
+
+const closeModal = function () {
+    modal.classList.add('hidden');
+    overlay.classList.add('hidden');
+};
+
+btnsOpenModal.forEach(btn => {
+    btn.addEventListener('click', openModal);
+});
+
+btnCloseModal.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+    }
+});
+
+btnScrollTo.addEventListener('click', function (e) {
+    section1.scrollIntoView({ behavior: 'smooth' });
+});
+
+///////////////////////////////////////
+// Page navigation
+
+// document.querySelectorAll('.nav__link').forEach(function (el) {
+//     el.addEventListener('click', function (e) {
+//         e.preventDefault();
+//         const id = this.getAttribute('href');
+//         document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+//     });
+// });
+
+// 1. Add eventListener to common parent element
+// 2. Determine what element originated the event
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+    e.preventDefault();
+    if (e.target.classList.contains('nav__link')) {
+        const id = e.target.getAttribute('href');
+        document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+    }
+});
+
+tabContainer.addEventListener('click', function (e) {
+    const clicked = e.target.closest('.operations__tab');
+    // guard clause
+    if (!clicked) return;
+
+    // remove all class active
+    tabs.forEach(t => t.classList.remove('operations__tab--active'));
+    tabContent.forEach(tc =>
+        tc.classList.remove('operations__content--active')
+    );
+
+    // add class active
+    clicked.classList.add('operations__tab--active');
+    document
+        .querySelector(`.operations__content--${clicked.dataset.tab}`)
+        .classList.add('operations__content--active');
+});
+
+// Menu fade animation
+const handleHover = function (e) {
+    if (e.target.classList.contains('nav__link')) {
+        const link = e.target;
+        const siblings = e.target
+            .closest('.nav')
+            .querySelectorAll('.nav__link');
+        // const logo = e.target.closest('.nav').querySelector('img');
+
+        siblings.forEach(s => {
+            if (s !== link) s.style.opacity = this;
+        });
+        // link.style.opacity = 1;
+    }
+};
+
+// passing an "argument" into handler
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+// Sticky navigation
+const initialCoors = section1.getBoundingClientRect();
+
+window.addEventListener('scroll', function () {
+    console.log(this.window.scrollY);
+    if (window.scrollY > initialCoors.top) nav.classList.add('sticky');
+    else nav.classList.remove('sticky');
+});
+/*
+tabs.forEach(function (el) {
+    el.addEventListener('click', function (t) {
+        const clicked = t.target;
+
+        // remove all active class
+        tabs.forEach(t => t.classList.remove('operations__tab--active'));
+        tabContent.forEach(tc =>
+            tc.classList.remove('operations__content--active')
+        );
+
+        // add active class
+        clicked.classList.add('operations__tab--active');
+        document
+            .querySelector(`.operations__content--${clicked.dataset.tab}`)
+            .classList.add('operations__content--active');
+    });
+});
+*/
+
+// selecting element
+// const header = document.querySelector('.header');
+// const message = document.createElement('div');
+// message.classList.add('cookie-message');
+// message.innerHTML = 'insert element from javascript';
+// header.append(message);
+// document.querySelector('body').addEventListener('click', () => {
+//   message.remove(message);
+// });
+
+// message.style.backgroundColor = '#1a2b3c';
+// message.style.borderRadius = '999px';
+// message.style.fontSize = '2rem';
+
+// message.style.height =
+//   Number.parseFloat(getComputedStyle(message).height) + 40 + 'px';
+
+// const logo = document.querySelector('.nav__logo');
+// document.documentElement.style.setProperty('--color-primary', 'yellow');
+// rgb(190, 219, 158)
+// const randomInt = (min, max) => Math.floor(Math.random(max - min + 1) * max);
+// const randomColor = () =>
+//     `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+
+// document.querySelector('.nav').addEventListener(
+//     'click',
+//     function (e) {
+//         this.style.backgroundColor = randomColor();
+//         console.log('Nav: ', e.target, e.currentTarget);
+//     },
+//     true
+// );
+
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//     this.style.backgroundColor = randomColor();
+//     console.log('Container: ', e.target, e.currentTarget);
+// });
+
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//     this.style.backgroundColor = randomColor();
+//     console.log('LINK: ', e.target, e.currentTarget);
+// });
+
+// going downwards
+// const h1 = document.querySelector('h1');
+// console.log(h1.querySelectorAll('.highlight'));
+// console.log(h1.childNodes);
+// console.log(h1.children);
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+// console.log(h1.previousSibling);
+// console.log(h1.nextSibling);
+// console.log(h1.parentNode.children);
