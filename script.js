@@ -64,6 +64,18 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
     }
 });
 
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//     e.preventDefault();
+//     if (e.target.classList.contains('nav__link')) {
+//         let id = e.target.getAttribute('href');
+//         if (id) {
+//             id = id.substring(1);
+//             const element = document.getElementById(id);
+//             if (element) element.scrollIntoView({ behavior: 'smooth' });
+//         }
+//     }
+// });
+
 tabContainer.addEventListener('click', function (e) {
     const clicked = e.target.closest('.operations__tab');
     // guard clause
@@ -102,13 +114,6 @@ const handleHover = function (e) {
 nav.addEventListener('mouseover', handleHover.bind(0.5));
 
 nav.addEventListener('mouseout', handleHover.bind(1));
-
-// Sticky navigation
-// const initialCoors = section1.getBoundingClientRect();
-
-// window.addEventListener('scroll', function () {
-//     if (window.scrollY > initialCoors.top) nav.classList.add('sticky');
-// });
 
 const navHeight = nav.getBoundingClientRect().height;
 
